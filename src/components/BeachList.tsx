@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Beach } from "../data/beaches";
 
 type BeachListProps = {
@@ -9,7 +10,7 @@ function BeachList({ items }: BeachListProps) {
     <ul>
       {items.map((b) => (
         <li key={b.id}>
-          {b.name} — {b.depto}
+          <Link to={`/playa/${b.id}`}>{b.name}</Link> — {b.depto}
         </li>
       ))}
     </ul>
@@ -17,3 +18,4 @@ function BeachList({ items }: BeachListProps) {
 }
 
 export default BeachList;
+
