@@ -4,7 +4,7 @@ import { beaches } from "../data/beaches";
 
 function Home() {
   return (
-    <div style={{ padding: 16 }}>
+    <div>
       <h1>Explorador de Playas del Uruguay</h1>
       <p>Descubrí playas según viento, oleaje y tranquilidad.</p>
 

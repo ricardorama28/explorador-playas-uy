@@ -8,7 +8,7 @@ function BeachDetail() {
 
   if (!beach) {
     return (
-      <div style={{ padding: 16 }}>
+      <div>
         <h1>Playa no encontrada</h1>
         <Link to="/">← Volver</Link>
       </div>
@@ -16,7 +16,7 @@ function BeachDetail() {
   }
 
   return (
-    <div style={{ padding: 16 }}>
+    <div>
       <Link to="/">← Volver</Link>
       <h1 style={{ marginTop: 12 }}>{beach.name}</h1>
       <p>Departamento: {beach.depto}</p>
