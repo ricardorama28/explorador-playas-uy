@@ -1,22 +1,30 @@
+import "./home.css";
 import Map from "../components/Map";
+import Filters from "../components/Filters";
 import BeachList from "../components/BeachList";
 import { beaches } from "../data/beaches";
 
 function Home() {
   return (
     <div>
-      <h1>Explorador de Playas del Uruguay</h1>
-      <p>Descubrí playas según viento, oleaje y tranquilidad.</p>
+      <h1 style={{ marginTop: 0 }}>Explorador de Playas del Uruguay</h1>
+      <p style={{ marginTop: 4, opacity: 0.8 }}>
+        Explorá playas por zona, servicios y condiciones (viento/olas).
+      </p>
 
-      <section style={{ marginTop: 16 }}>
-        <h2>Mapa</h2>
-        <Map />
-      </section>
+      {/* 2 columnas */}
+      <div className="homeGrid">
+        {/* Columna mapa */}
+        <div>
+          <Map />
+        </div>
 
-      <section style={{ marginTop: 16 }}>
-        <h2>Playas</h2>
-        <BeachList items={beaches} />
-      </section>
+        {/* Columna panel */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <Filters />
+          <BeachList items={beaches} />
+        </div>
+      </div>
     </div>
   );
 }

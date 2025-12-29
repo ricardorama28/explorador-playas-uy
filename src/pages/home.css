@@ -1,0 +1,12 @@
+.homeGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .homeGrid {
+    grid-template-columns: 1fr;
+  }
+}
