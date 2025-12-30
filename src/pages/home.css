@@ -28,7 +28,7 @@
 
 @media (max-width: 900px) {
   .mapBox {
-    grid-template-columns: 1fr; /* se apila en mobile */
+    grid-template-columns: 1fr;
     height: auto;
   }
   .rightPanel {
