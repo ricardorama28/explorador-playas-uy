@@ -1,8 +1,9 @@
 type MapProps = {
   height?: number;
+  selectedName?: string;
 };
 
-function Map({ height = 520 }: MapProps) {
+function Map({ height = 520, selectedName }: MapProps) {
   return (
     <div
       style={{
@@ -14,7 +15,11 @@ function Map({ height = 520 }: MapProps) {
         top: 16,
       }}
     >
-      Mapa acá (después Leaflet)
+      <div style={{ fontSize: 12, opacity: 0.7 }}>
+        {selectedName ? `Seleccionada: ${selectedName}` : "Seleccioná una playa"}
+      </div>
+
+      <div style={{ marginTop: 8 }}>Mapa acá (después Leaflet)</div>
     </div>
   );
 }

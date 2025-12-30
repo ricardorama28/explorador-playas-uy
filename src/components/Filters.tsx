@@ -1,4 +1,32 @@
-function Filters() {
+type Depto = "Rocha" | "Maldonado" | "Canelones" | "Montevideo";
+type Tag = "tranquila" | "movida" | "servicios" | "naturaleza";
+
+type FiltersProps = {
+  depto: Depto | null;
+  tag: Tag | null;
+  onDeptoChange: (value: Depto | null) => void;
+  onTagChange: (value: Tag | null) => void;
+  onClear: () => void;
+};
+
+function Filters({ depto, tag, onDeptoChange, onTagChange, onClear }: FiltersProps) {
+  const deptoBtn = (value: Depto) => ({
+    background: depto === value ? "rgba(110,168,254,0.18)" : "transparent",
+    border: depto === value ? "1px solid #6ea8fe" : "1px solid #ddd",
+  });
+
+  const tagBtn = (value: Tag) => ({
+    background: tag === value ? "rgba(110,168,254,0.18)" : "transparent",
+    border: tag === value ? "1px solid #6ea8fe" : "1px solid #ddd",
+  });
+
+  const baseBtn: React.CSSProperties = {
+    padding: "8px 10px",
+    borderRadius: 10,
+    cursor: "pointer",
+    color: "inherit",
+  };
+
   return (
     <div
       style={{
@@ -10,11 +38,28 @@ function Filters() {
         borderRadius: 12,
       }}
     >
-      <span style={{ fontSize: 12, opacity: 0.7 }}>Filtros (próx.)</span>
-      <button type="button">Rocha</button>
-      <button type="button">Maldonado</button>
-      <button type="button">Tranquila</button>
-      <button type="button">Con servicios</button>
+      <span style={{ fontSize: 12, opacity: 0.7, marginRight: 6 }}>Filtros</span>
+
+      {/* Deptos */}
+      <button type="button" style={{ ...baseBtn, ...deptoBtn("Rocha") }} onClick={() => onDeptoChange(depto === "Rocha" ? null : "Rocha")}>
+        Rocha
+      </button>
+      <button type="button" style={{ ...baseBtn, ...deptoBtn("Maldonado") }} onClick={() => onDeptoChange(depto === "Maldonado" ? null : "Maldonado")}>
+        Maldonado
+      </button>
+
+      {/* Tags */}
+      <button type="button" style={{ ...baseBtn, ...tagBtn("tranquila") }} onClick={() => onTagChange(tag === "tranquila" ? null : "tranquila")}>
+        Tranquila
+      </button>
+      <button type="button" style={{ ...baseBtn, ...tagBtn("servicios") }} onClick={() => onTagChange(tag === "servicios" ? null : "servicios")}>
+        Con servicios
+      </button>
+
+      {/* Reset */}
+      <button type="button" style={{ ...baseBtn, border: "1px solid #ddd", opacity: 0.8 }} onClick={onClear}>
+        Limpiar
+      </button>
     </div>
   );
 }

@@ -1,16 +1,17 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation} from "react-router-dom";
 import { beaches } from "../data/beaches";
 
 function BeachDetail() {
   const { id } = useParams<{ id: string }>();
-
   const beach = beaches.find((b) => b.id === id);
+  const location = useLocation();
+  const qs = location.search;
 
   if (!beach) {
     return (
       <div>
         <h1>Playa no encontrada</h1>
-        <Link to="/">← Volver</Link>
+        <Link to={`/${qs}`}>← Volver</Link>
       </div>
     );
   }
