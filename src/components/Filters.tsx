@@ -1,15 +1,16 @@
-type Depto = "Rocha" | "Maldonado" | "Canelones" | "Montevideo";
-type Tag = "tranquila" | "movida" | "servicios" | "naturaleza";
+import type { Tag, Depto, Waterbody } from "../data/beaches";
 
 type FiltersProps = {
   depto: Depto | null;
   tag: Tag | null;
+  water: Waterbody | null;
   onDeptoChange: (value: Depto | null) => void;
   onTagChange: (value: Tag | null) => void;
+  onWaterChange: (value: Waterbody | null) => void;
   onClear: () => void;
 };
 
-function Filters({ depto, tag, onDeptoChange, onTagChange, onClear }: FiltersProps) {
+function Filters({ depto, tag, water, onDeptoChange, onTagChange, onWaterChange, onClear }: FiltersProps) {
   const deptoBtn = (value: Depto) => ({
     background: depto === value ? "rgba(110,168,254,0.18)" : "transparent",
     border: depto === value ? "1px solid #6ea8fe" : "1px solid #ddd",
@@ -26,6 +27,20 @@ function Filters({ depto, tag, onDeptoChange, onTagChange, onClear }: FiltersPro
     cursor: "pointer",
     color: "inherit",
   };
+
+  const inactiveBtn: React.CSSProperties = {
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    color: "rgba(255,255,255,0.9)",
+  };
+
+  const activeBtn: React.CSSProperties = {
+    background: "rgba(255,255,255,0.12)",
+    border: "1px solid rgba(255,255,255,0.25)",
+    color: "#fff",
+  };
+
+
 
   return (
     <div
@@ -48,12 +63,26 @@ function Filters({ depto, tag, onDeptoChange, onTagChange, onClear }: FiltersPro
         Maldonado
       </button>
 
+      <button
+          type="button"
+          style={{ ...baseBtn, ...(water === "river" ? activeBtn : inactiveBtn) }}
+          onClick={() => onWaterChange(water === "river" ? null : "river")}
+    >
+      Río
+    </button>
+
+      <button
+          type="button"
+          style={{ ...baseBtn, ...(water === "ocean" ? activeBtn : inactiveBtn) }}
+          onClick={() => onWaterChange(water === "ocean" ? null : "ocean")}
+    >
+      Océano
+    </button>
+
+
       {/* Tags */}
       <button type="button" style={{ ...baseBtn, ...tagBtn("tranquila") }} onClick={() => onTagChange(tag === "tranquila" ? null : "tranquila")}>
         Tranquila
-      </button>
-      <button type="button" style={{ ...baseBtn, ...tagBtn("servicios") }} onClick={() => onTagChange(tag === "servicios" ? null : "servicios")}>
-        Con servicios
       </button>
 
       {/* Reset */}

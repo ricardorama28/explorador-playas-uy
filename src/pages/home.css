@@ -1,12 +1,37 @@
 .homeGrid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1fr; /* título + subtítulo + contenido */
   gap: 16px;
   align-items: start;
 }
 
+.mapBox {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* mapa | panel */
+  gap: 16px;
+  width: 100%;
+  height: 520px;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 520px;
+}
+
+.listBox {
+  flex: 1;
+  overflow: auto;
+  padding-right: 6px;
+}
+
 @media (max-width: 900px) {
-  .homeGrid {
-    grid-template-columns: 1fr;
+  .mapBox {
+    grid-template-columns: 1fr; /* se apila en mobile */
+    height: auto;
+  }
+  .rightPanel {
+    height: auto;
   }
 }

@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation} from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { beaches } from "../data/beaches";
 
 function BeachDetail() {
@@ -18,7 +18,7 @@ function BeachDetail() {
 
   return (
     <div>
-      <Link to="/">← Volver</Link>
+      <Link to={`/${qs}`}>← Volver</Link>
       <h1 style={{ marginTop: 12 }}>{beach.name}</h1>
       <p>Departamento: {beach.depto}</p>
 
