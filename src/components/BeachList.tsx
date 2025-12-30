@@ -12,7 +12,7 @@ function BeachList({ items }: BeachListProps) {
         border: "1px solid #ddd",
         borderRadius: 12,
         padding: 12,
-        maxHeight: 420,
+        maxHeight: "100%",
         overflow: "auto",
       }}
     >

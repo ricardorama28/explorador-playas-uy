@@ -12,17 +12,16 @@ function Home() {
         Explorá playas por zona, servicios y condiciones (viento/olas).
       </p>
 
-      {/* 2 columnas */}
       <div className="homeGrid">
-        {/* Columna mapa */}
         <div>
           <Map />
         </div>
 
-        {/* Columna panel */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 520 }}>
           <Filters />
-          <BeachList items={beaches} />
+          <div style={{ flex: 1 }}>
+            <BeachList items={beaches} />
+          </div>
         </div>
       </div>
     </div>
