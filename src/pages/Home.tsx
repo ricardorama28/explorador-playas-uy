@@ -10,10 +10,13 @@ const isDepto = (v: string | null): v is Depto =>
   v === "Rocha" || v === "Maldonado" || v === "Canelones" || v === "Montevideo";
 
 const isTag = (v: string | null): v is Tag =>
-  v === "tranquila" || v === "movida" || v === "servicios" || v === "naturaleza";
+  v === "tranquila" || v === "movida" || v === "naturaleza" || v === "surf" || v === "familia";
+
+const isWaterbody = (v: string | null): v is Waterbody =>
+  v === "river" || v === "ocean";
 
 function Home() {
-  const [selectedId, setSelectedId] = useState<string | null>(beaches[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,9 +26,6 @@ function Home() {
 
   const deptoFilter = isDepto(deptoParam) ? deptoParam : null;
   const tagFilter = isTag(tagParam) ? tagParam : null;
-  const isWaterbody = (v: string | null): v is Waterbody =>
-    v === "river" || v === "ocean";
-
   const waterFilter = isWaterbody(waterParam) ? waterParam : null;
 
   const filteredBeaches = beaches.filter((b) => {
@@ -36,18 +36,13 @@ function Home() {
   });
 
   const handleSelect = (id: string) => {
-      // 1er click: seleccionar
-      if (id !== selectedId) {
-        setSelectedId(id);
-        return;
-      }
-
-      // 2do click (ya seleccionada): ir al detalle
-      const qs = searchParams.toString();
-      navigate(`/playa/${id}${qs ? `?${qs}` : ""}`);
-    };
-
-
+    if (id !== selectedId) {
+      setSelectedId(id);
+      return;
+    }
+    const qs = searchParams.toString();
+    navigate(`/playa/${id}${qs ? `?${qs}` : ""}`);
+  };
 
   const setDepto = (value: Depto | null) => {
     const next = new URLSearchParams(searchParams);
@@ -64,35 +59,36 @@ function Home() {
   };
 
   const setWater = (value: Waterbody | null) => {
-      const next = new URLSearchParams(searchParams);
-      if (!value) next.delete("water");
-      else next.set("water", value);
-      setSearchParams(next);
-    };
-
-
-  const clearFilters = () => {
     const next = new URLSearchParams(searchParams);
-    next.delete("depto");
-    next.delete("tag");
-    next.delete("water");
+    if (!value) next.delete("water");
+    else next.set("water", value);
     setSearchParams(next);
   };
 
-  return (
-    <div className="homeGrid">
-      <h1 style={{ marginTop: 0 }}>Explorador de Playas del Uruguay</h1>
-      <p style={{ marginTop: 4, opacity: 0.8 }}>
-        Explorá playas por zona, servicios y condiciones (viento/olas).
-      </p>
+  const clearFilters = () => {
+    setSearchParams(new URLSearchParams());
+  };
 
-      <div className="mapBox">
-        <Map items={filteredBeaches}
-         selectedId={selectedId}
-         onSelect={(id) => setSelectedId(id)}  />
+  return (
+    <div className="home">
+      <div className="home__hero">
+        <h1 className="home__title">Explora las playas de Uruguay</h1>
+        <p className="home__subtitle">
+          Descubri {beaches.length} playas a lo largo de la costa, desde Montevideo hasta Rocha.
+          Filtra por departamento, tipo de agua y estilo.
+        </p>
       </div>
 
-        <div className="rightPanel" >
+      <div className="home__content">
+        <div className="home__map">
+          <Map
+            items={filteredBeaches}
+            selectedId={selectedId}
+            onSelect={(id) => setSelectedId(id)}
+          />
+        </div>
+
+        <div className="home__sidebar">
           <Filters
             depto={deptoFilter}
             tag={tagFilter}
@@ -101,13 +97,20 @@ function Home() {
             onTagChange={setTag}
             onWaterChange={setWater}
             onClear={clearFilters}
+            totalCount={beaches.length}
+            filteredCount={filteredBeaches.length}
           />
 
-          <div className="listBox">
-            <BeachList items={filteredBeaches} selectedId={selectedId} onSelect={handleSelect} />
+          <div className="home__list-wrapper">
+            <BeachList
+              items={filteredBeaches}
+              selectedId={selectedId}
+              onSelect={handleSelect}
+            />
           </div>
         </div>
       </div>
+    </div>
   );
 }
 
