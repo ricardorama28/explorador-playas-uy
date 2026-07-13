@@ -1,73 +1,140 @@
-# React + TypeScript + Vite
+# 🌊 Explorador de Playas UY
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para descubrir y comparar **57 playas** de la costa uruguaya, desde
+Montevideo hasta Rocha. Explorá el mapa, filtrá por departamento, tipo de agua y
+estilo de playa, y abrí la ficha de cada playa con sus servicios, nivel de acceso y
+ubicación.
 
-Currently, two official plugins are available:
+> Río de la Plata y océano Atlántico en un solo lugar. Encontrá tu próxima playa
+> según lo que buscás: tranquilidad, movida, surf, naturaleza o un plan en familia.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Mapa interactivo** (Leaflet + OpenStreetMap) con marcadores para cada playa y
+  ajuste automático de encuadre según los filtros activos.
+- **Filtros combinables** por:
+  - Departamento — Montevideo, Canelones, Maldonado, Rocha.
+  - Cuerpo de agua — Río de la Plata u océano Atlántico.
+  - Tipo de playa — familia, tranquila, movida, surf, naturaleza.
+- **Filtros persistidos en la URL**: podés compartir una búsqueda concreta
+  (ej. `/?depto=Rocha&tag=surf`) y se abre con los mismos filtros aplicados.
+- **Listado sincronizado con el mapa**: seleccionar una playa la centra en el mapa;
+  volver a tocarla abre su ficha de detalle.
+- **Ficha de detalle** por playa con descripción, tags, cuerpo de agua, nivel de
+  acceso, largo aproximado, coordenadas y servicios disponibles.
+- **Diseño responsive** con sistema de tokens CSS (colores, tipografías, sombras).
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🧱 Stack técnico
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Área         | Tecnología |
+|--------------|-----------|
+| Framework    | [React 19](https://react.dev/) |
+| Lenguaje     | [TypeScript](https://www.typescriptlang.org/) |
+| Build / dev  | [Vite 7](https://vite.dev/) |
+| Ruteo        | [React Router 7](https://reactrouter.com/) |
+| Mapas        | [Leaflet](https://leafletjs.com/) + [react-leaflet](https://react-leaflet.js.org/) |
+| Linting      | ESLint 9 + typescript-eslint |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Puesta en marcha
+
+Requisitos: **Node.js 20.19+ o 22.12+** (lo exige Vite 7) y npm.
+
+```bash
+# 1. Instalar dependencias
+npm install
+
+# 2. Levantar el servidor de desarrollo (http://localhost:5173)
+npm run dev
+
+# 3. Build de producción (typecheck + bundle en dist/)
+npm run build
+
+# 4. Previsualizar el build de producción
+npm run preview
+
+# 5. Linter
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🗂️ Estructura del proyecto
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── App.tsx                # Rutas (/ y /playa/:id) con React Router
+├── main.tsx               # Punto de entrada
+├── components/
+│   ├── Layout.tsx         # Header + footer + <Outlet/>
+│   ├── Map.tsx            # Mapa Leaflet con marcadores y FitBounds
+│   ├── Filters.tsx        # Chips de filtro (depto / agua / tag)
+│   ├── BeachList.tsx      # Listado de resultados
+│   └── BeachCard.tsx      # Tarjeta resumen de una playa
+├── pages/
+│   ├── Home.tsx           # Vista principal: mapa + filtros + listado
+│   └── BeachDetail.tsx    # Ficha completa de una playa
+├── data/
+│   └── beaches.ts         # Fuente de verdad: tipos + dataset de playas
+└── lib/
+    └── leafletIcon.ts     # Configuración del ícono de marcador
+```
+
+---
+
+## 📊 Modelo de datos
+
+Todas las playas viven en [`src/data/beaches.ts`](src/data/beaches.ts). Cada playa
+sigue el tipo `Beach`:
+
+```ts
+type Beach = {
+  id: string;              // slug único, usado en la URL de detalle
+  name: string;
+  depto: "Maldonado" | "Canelones" | "Montevideo" | "Rocha";
+  waterbody: "ocean" | "river";   // Atlántico | Río de la Plata
+  lat: number;
+  lng: number;
+  access: "easy" | "medium" | "hard";
+  services: ("parking" | "toilets" | "lifeguard" | "food" | "showers")[];
+  tags: ("tranquila" | "movida" | "naturaleza" | "surf" | "familia")[];
+  description: string;
+  lengthKm?: number;       // largo aproximado de la playa
+};
+```
+
+### Agregar una playa nueva
+
+1. Abrí `src/data/beaches.ts`.
+2. Agregá un objeto `Beach` al array del departamento correspondiente
+   (`rochaBeaches`, `maldonadoBeaches`, `canelonesBeaches` o `montevideoBeaches`).
+3. Usá un `id` único en formato slug (ej. `"playa-nueva"`).
+4. El nuevo registro aparece automáticamente en el mapa, los filtros y el listado.
+
+> 💡 La arquitectura completa del proyecto (visión, stack, invariantes de datos y
+> roadmap por fases) vive en **[`biblia.md`](biblia.md)**. Cómo trabajar y el estado
+> de avance, en **[`CLAUDE.md`](CLAUDE.md)**.
+
+---
+
+## 🧭 Roadmap
+
+La ficha de detalle ya reserva un espacio para **condiciones y reportes**. Próximas
+mejoras previstas:
+
+- Información de viento y oleaje por playa.
+- Reportes de noctilucas (mar bioluminiscente).
+- Buscador por nombre y ordenamientos.
+- Favoritos y planificación de recorridos.
+
+---
+
+## 📄 Sobre el proyecto
+
+Proyecto **personal de portfolio** para explorar la costa uruguaya. Los datos de
+playas son orientativos; verificá siempre las condiciones locales antes de visitar.
